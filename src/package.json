@@ -1,0 +1,22 @@
+{
+  "name": "weatherinswitzerland",
+  "version": "1.0.0",
+  "description": "alexa skill for weather information in switzerland",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaArchidiacono/Alexa-SwitzerlandWeather-Skill.git"
+  },
+  "author": "Luca Archidiacono",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucaArchidiacono/Alexa-SwitzerlandWeather-Skill/issues"
+  },
+  "homepage": "https://github.com/lucaArchidiacono/Alexa-SwitzerlandWeather-Skill#readme",
+  "devDependencies": {
+    "alexa-sdk": "^1.0.25"
+  }
+}
