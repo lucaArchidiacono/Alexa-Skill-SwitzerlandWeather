@@ -43,7 +43,7 @@ exports.handler = function (event, context) {
               var saidDate = event.request.intent.slots.Date.value;
               if (saidDate == null) {
                 saidDate = today;
-                console.log("SaidDate == null this is the current datevalue: " + saidDate)
+                console.log("SaidDate == null this is will be the current datevalue: " + saidDate)
               }
               var comingDay = false;
               console.log("Slot.Datum: " + saidDate);
@@ -55,29 +55,24 @@ exports.handler = function (event, context) {
                 });
                 response.on('end', () => {
                   var data = JSON.parse(body);
-                  console.log("DataListLength: " + data.list.length);
                   var listOfMaxMinWeatherToday = [];
                   var currentTemp = [];
                   for (var i = 0, len = data.list.length; i < len; i++) {
-                    console.log("DataListDT: " + data.list[i].dt);
                     var jsonDate = new Date(data.list[i].dt * 1000);
                     var jsonYear = jsonDate.getFullYear();
                     var jsonMonth = jsonDate.getMonth() + 1;
                     var jsonDay = jsonDate.getDate();
                     if (jsonMonth < 10) {
                       jsonMonth = "0" + jsonMonth;
-                      console.log("MonthWithZero: " + jsonMonth)
                     }
                     if (jsonDay < 10) {
                       jsonDay = "0" + jsonDate.getDate();
-                      console.log("DayWithZero: " + jsonDay)
                     }
 
                     var jsonTime = jsonYear + "-" + jsonMonth + "-" + jsonDay;
 
                     console.log("JsonTime: " + jsonTime + " SaidDate: " + saidDate);
                     if (jsonTime === saidDate) {
-                      console.log("After if true JsonTime: " + jsonTime + " SaidDate: " + saidDate);
                       var temp = data.list[i].main.temp;
                       var maxTemp = data.list[i].main.temp_max;
                       var minTemp = data.list[i].main.temp_min;
@@ -85,9 +80,8 @@ exports.handler = function (event, context) {
                       listOfMaxMinWeatherToday.push(maxTemp);
                       listOfMaxMinWeatherToday.push(minTemp);
                       console.log("currentTemp: "+temp+" maxTemp: "+maxTemp+" minTemp: "+minTemp);
-                      if (maxTemp === minTemp && minTemp === temp && maxTemp === temp) {
+                      if (today != jsonTime) {
                         comingDay = true;
-                        console.log("comingDay: "+comingDay);
                         var weekday = new Array(7);
                         weekday[0] = "Sunday";
                         weekday[1] = "Monday";
@@ -98,13 +92,6 @@ exports.handler = function (event, context) {
                         weekday[6] = "Saturday";
                         jsonWeekDay = weekday[jsonDate.getDay()]
                       }
-                      // if (maxTemp == minTemp) {
-                      //   context.succeed(
-                      //     generateResponse(
-                      //       buildSpeechletResponse(`It will be ${currentTemp} degrees.`, true), {}
-                      //     )
-                      //   )
-                      // }
                     }
                   }
                   var minimum = Array.min(listOfMaxMinWeatherToday);
@@ -112,13 +99,13 @@ exports.handler = function (event, context) {
                   if (comingDay === true) {
                     context.succeed(
                       generateResponse(
-                        buildSpeechletResponse(jsonWeekDay+' will be maximum '+maximum+' and minimum '+minimum+' degrees.', true), {}
+                        buildSpeechletResponse(jsonWeekDay+' will be maximum '+Math.round(maximum)+' and minimum '+Math.round(minimum)+' degrees.', true), {}
                       )
                     )
                   }
                   context.succeed(
                     generateResponse(
-                      buildSpeechletResponse('Currently it is '+currentTemp[0]+' degrees. It will be maximum '+maximum+' and minimum '+minimum+' degrees.', true), {}
+                      buildSpeechletResponse('Currently it is '+Math.round(currentTemp[0])+' degrees. It will be maximum '+Math.round(maximum)+' and minimum '+Math.round(minimum)+' degrees.', true), {}
                     )
                   )
               })
