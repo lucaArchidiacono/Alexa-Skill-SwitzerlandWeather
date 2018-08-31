@@ -47,7 +47,7 @@ exports.handler = function (event, context) {
               }
               var comingDay = false;
               console.log("Slot.Datum: " + saidDate);
-              var endpoint = "https://api.openweathermap.org/data/2.5/forecast?q=Zurich,ch&units=metric&mode=json&appid=4ed3e8346de06e2bb629639c03d37157";
+              var endpoint = ""; //https://api.openweathermap.org/data/2.5/forecast?q=Zurich,ch&units=metric&mode=json&appid=<YOUR API-KEY>
               var body = "";
               https.get(endpoint, (response) => {
                 response.on('data', (chunk) => {
